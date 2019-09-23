@@ -1,0 +1,19 @@
+{
+  "name": "bucket-list-backend",
+  "version": "1.0.0",
+  "description": "This is the server side code for the app Build Week - BucketList",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BW-Bucket-List/back-end.git"
+  },
+  "author": "\"Adnan Chowdhury & John Donaldson\"",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BW-Bucket-List/back-end/issues"
+  },
+  "homepage": "https://github.com/BW-Bucket-List/back-end#readme"
+}
