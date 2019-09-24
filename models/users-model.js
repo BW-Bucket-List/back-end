@@ -4,7 +4,7 @@ module.exports = { add, find, findBy, findById, update, remove };
 
 function add(user) {
   return db("users")
-    .insert(user, "id")
+    .insert(user)
     .then(ids => {
       const [id] = ids;
       return findById(id);
@@ -17,7 +17,7 @@ function find() {
 
 function findById(id) {
   return db("users")
-    .where({ id })
+    .where("user_id", id)
     .first();
 }
 
