@@ -1,4 +1,5 @@
 const db = require("../database/dbConfig");
+const BucketList = require("./bucketList-model");
 
 module.exports = {
   add,
@@ -20,13 +21,27 @@ function add(user) {
 }
 
 function find() {
-  return db("users").select("*");
+  return db("users");
 }
 
 function findById(id) {
   return db("users")
+    .select("user_id", "username", "email")
     .where("user_id", id)
     .first();
+}
+
+function findUserBucketListByIdAndType(id, bool) {
+  return db("users")
+    .where("user_id", id)
+    .andWhere("private", bool)
+    .select(
+      "bucket_list_id",
+      "bucket_list_name",
+      "bucket_list_user_id",
+      "private"
+    )
+    .join("bucketLists", "users.user_id", "bucketLists.bucket_list_user_id");
 }
 
 function findBy(filter) {
@@ -46,11 +61,39 @@ function update(data, id) {
 }
 
 function findUserWithData(id) {
-  return db("users")
-    .select("user_id", "username", "email")
-    .where("user_id", id)
-    .first()
-    .then(user => {
+  const userQuery = findById(id);
+  const userPrivateBucketListQuery = findUserBucketListByIdAndType(id, true);
+  const userSharedBucketListQuery = findUserBucketListByIdAndType(id, false);
+  return Promise.all([
+    userQuery,
+    userSharedBucketListQuery,
+    userPrivateBucketListQuery
+  ]).then(([user, sharedBuckets, privateBuckets]) => {
+    user.sharedBucketLists = sharedBuckets;
+    user.privateBucketLists = privateBuckets;
+    return user;
+  });
+}
+
+// return db("users")
+// .where("user_id", id)
+// .first()
+// .then(user => {
+//   let myUser = { ...user };
+//   return (
+//     db("users")
+//       //.select("user_id", "username", "email")
+//       .where("user_id", id)
+//       .join(
+//         "bucketLists",
+//         "users.user_id",
+//         "bucketLists.bucket_list_user_id"
+//       )
+//       .then(allBucketListsByUser => {})
+//   );
+// });
+
+/*     .then(user => {
       let myUser = { ...user };
       return db("bucketLists as BL")
         .join(
@@ -66,5 +109,4 @@ function findUserWithData(id) {
           myUser.privateList = privateList;
           return myUser;
         });
-    });
-}
+    });*/

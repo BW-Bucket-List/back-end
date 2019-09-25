@@ -20,13 +20,13 @@ function find() {
 }
 
 function findById(id) {
-  return db("bucketLists as BL")
+  return db("bucketLists")
     .where("bucket_list_id", id)
     .first()
-    .then(bucketlist => {
-      currentBucketList = { ...bucketlist };
+    .then(bucketList => {
+      currentBucketList = { ...bucketList };
       return db("bucketListsItems")
-        .where("bucket_list_id", bucketlist.bucket_list_id)
+        .where("bucket_list_id", bucketList.bucket_list_id)
         .then(items => {
           currentBucketList.items = items;
           return currentBucketList;
