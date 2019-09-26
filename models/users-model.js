@@ -52,8 +52,8 @@ function findUserBucketListByIdAndType(id, bool) {
       "bucket_list_user_id",
       "private"
     )
-    .join("bucketLists", "users.user_id", "bucketLists.bucket_list_user_id")
-    .map(e => conversion(e));
+    .join("bucketLists", "users.user_id", "bucketLists.bucket_list_user_id");
+  //.map(e => conversion(e));
 }
 
 function findBy(filter) {
@@ -81,8 +81,8 @@ function update(data, id) {
 
 function findUserWithData(id) {
   const userQuery = findById(id);
-  const userPrivateBucketListQuery = findUserBucketListByIdAndType(id, 1);
-  const userSharedBucketListQuery = findUserBucketListByIdAndType(id, 0);
+  const userPrivateBucketListQuery = findUserBucketListByIdAndType(id, true);
+  const userSharedBucketListQuery = findUserBucketListByIdAndType(id, false);
   return Promise.all([
     userQuery,
     userSharedBucketListQuery,

@@ -93,8 +93,8 @@ function remove(id) {
 function findItem(id) {
   return db("bucketListsItems")
     .where("item_id", id)
-    .first()
-    .then(item => completedConversion(item));
+    .first();
+  //.then(item => completedConversion(item));
 }
 
 function addItem(newItem) {
