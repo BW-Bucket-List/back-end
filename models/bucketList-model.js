@@ -60,12 +60,14 @@ function findById(id) {
     .first()
     .then(bucketList => {
       currentBucketList = { ...bucketList };
-      return db("bucketListsItems")
-        .where("bucket_list_id", bucketList.bucket_list_id)
-        .then(items => {
-          currentBucketList.items = items.map(e => completedConversion(e));
-          return conversion(currentBucketList);
-        });
+      return db("bucketListsItems").where(
+        "bucket_list_id",
+        bucketList.bucket_list_id
+      );
+      // .then(items => {
+      //   currentBucketList.items = items.map(e => completedConversion(e));
+      //   return conversion(currentBucketList);
+      // });
     });
 }
 
