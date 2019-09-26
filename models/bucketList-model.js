@@ -107,7 +107,7 @@ function updateItem(data, id) {
     .update(data)
     .then(accepted => {
       if (accepted === 1) {
-        return findById(id);
+        return findItem(id);
       } else {
         return accepted;
       }

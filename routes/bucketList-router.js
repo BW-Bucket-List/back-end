@@ -87,6 +87,16 @@ router.delete("/:id", validationBucket.validateBucketListID, (req, res) => {
 
 //router.post(/items) -> Adds items to a bucketlist requires a item name & existing bucketlistID
 
+router.post("/items", validation.validateNewBucketListItem, (req, res) => {
+  BucketLists.addItem(req.body)
+    .then(addedItem => res.status(201).json(addedItem))
+    .catch(error =>
+      res
+        .status(500)
+        .json({ errorMessage: "Problem with the request", error: error })
+    );
+});
+
 //router.put("/items") updates bucket items, requires bucketlistitem id and updates that item
 
 //router.delete("/items/:id") deletes items based on their Item ID
