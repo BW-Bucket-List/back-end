@@ -1,5 +1,4 @@
 const db = require("../database/dbConfig");
-const BucketList = require("./bucketList-model");
 
 module.exports = {
   add,

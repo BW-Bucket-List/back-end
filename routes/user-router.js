@@ -2,10 +2,10 @@ const router = require("express").Router();
 const jwt = require("jsonwebtoken");
 
 const Users = require("../models/users-model");
-const validation = require("../middleware/validation");
+const validationUser = require("../middleware/validationDatabase");
 const restricted = require("../middleware/restricted-access");
 
-router.get("/:id", restricted, (req, res) => {
+router.get("/:id", [restricted, validationUser.validateUserID], (req, res) => {
   Users.findUserWithData(req.params.id)
     .then(user => res.status(200).json(user))
     .catch(error =>
@@ -16,15 +16,13 @@ router.get("/:id", restricted, (req, res) => {
 });
 
 //router.put => user is updated at ID Validate everything except password
-router.put("/:id", restricted, (req, res) => {
+router.put("/:id", [restricted, validationUser.validateUserID], (req, res) => {
   Users.update(req.body, req.params.id)
     .then(accepts => {
       if (accepts === 0) {
-        res
-          .status(400)
-          .json({
-            error: "The user with that ID doesn't exists so cannot be updated"
-          });
+        res.status(400).json({
+          error: "The user with that ID doesn't exists so cannot be updated"
+        });
       } else {
         res.status(202).json(accepts);
       }

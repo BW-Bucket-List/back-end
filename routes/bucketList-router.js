@@ -17,6 +17,8 @@ router.get("/:id", (req, res) => {
     );
 });
 
+//router.get('/') sends list of bucketlists ONLY the shareable ones and requires auth to access
+
 //router.post("/") -> Creates a new bucket list, requires user id, bucketlist name, validates user id first before running
 
 //router.post(/items) -> Adds items to a bucketlist requires a item name & existing bucketlistID
