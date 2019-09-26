@@ -81,8 +81,8 @@ function update(data, id) {
 
 function findUserWithData(id) {
   const userQuery = findById(id);
-  const userPrivateBucketListQuery = findUserBucketListByIdAndType(id, true);
-  const userSharedBucketListQuery = findUserBucketListByIdAndType(id, false);
+  const userPrivateBucketListQuery = findUserBucketListByIdAndType(id, 1);
+  const userSharedBucketListQuery = findUserBucketListByIdAndType(id, 0);
   return Promise.all([
     userQuery,
     userSharedBucketListQuery,
