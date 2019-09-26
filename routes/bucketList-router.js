@@ -70,7 +70,19 @@ router.put(
   }
 );
 //router.delete("/:id") deletes bucketlist, related bucketlistitems are also deleted
-
+router.delete("/:id", validationBucket.validateBucketListID, (req, res) => {
+  BucketLists.remove(req.params.id)
+    .then(deleted =>
+      res
+        .status(200)
+        .json({ listDeleted: deleted, message: "Successful Deletion" })
+    )
+    .catch(error =>
+      res
+        .status(500)
+        .json({ errorMessage: "Problem with the request", error: error })
+    );
+});
 // **** Below are endpoints for adding items to bucketlist ***
 
 //router.post(/items) -> Adds items to a bucketlist requires a item name & existing bucketlistID
