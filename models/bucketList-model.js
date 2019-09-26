@@ -4,7 +4,12 @@ module.exports = {
   add,
   find,
   findById,
-  validateID
+  validateID,
+  update,
+  remove,
+  addItem,
+  updateItem,
+  removeItem
 };
 
 function intToBoolean(int) {
@@ -62,6 +67,58 @@ function findById(id) {
         });
     });
 }
+
+function update(data, id) {
+  return db("bucketLists")
+    .where("bucket_list_id", id)
+    .update(data)
+    .then(accepted => {
+      if (accepted === 1) {
+        return findById(id);
+      } else {
+        return accepted;
+      }
+    });
+}
+
+function remove(id) {
+  return db("bucketLists")
+    .where("bucket_list_id", id)
+    .del();
+}
+
+function findItem(id) {
+  return db("bucketListsItems")
+    .where("item_id", id)
+    .first();
+}
+
+function addItem(newItem) {
+  return db("bucketListsItems")
+    .insert(newItem)
+    .then(ids => {
+      const [id] = ids;
+      return findItem(id);
+    });
+}
+function updateItem(data, id) {
+  return db("bucketListsItems")
+    .where("item_id", id)
+    .update(data)
+    .then(accepted => {
+      if (accepted === 1) {
+        return findById(id);
+      } else {
+        return accepted;
+      }
+    });
+}
+function removeItem(id) {
+  return db("bucketListsItems")
+    .where("item_id", id)
+    .del();
+}
+
 // function findByUserId(id) {
 //   return db("bucketLists").where("bucket_list_user_id", id);
 //   // .then(bucketList => {
@@ -74,4 +131,3 @@ function findById(id) {
 //   //     });
 //   // });
 // }
-function sortByBucketLists(id) {}

@@ -62,7 +62,7 @@ function findBy(filter) {
 
 function remove(id) {
   return db("users")
-    .where({ id })
+    .where(id)
     .del();
 }
 
