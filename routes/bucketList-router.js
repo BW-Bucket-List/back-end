@@ -127,18 +127,22 @@ router.put(
 
 //router.delete("/items/:id") deletes items based on their Item ID
 
-//This route requires more sorting through promises
-// router.get("/user/:id", (req, res) => {
-//   BucketLists.findByUserId(req.params.id)
-//     .then(bucketList => res.status(200).json(bucketList))
-//     .catch(error =>
-//       res
-//         .status(500)
-//         .json({
-//           errorMessage: "Problem with Database processing",
-//           error: error
-//         })
-//     );
-// });
+router.delete(
+  "/items/:id",
+  validationBucket.validateBucketListItemID,
+  (req, res) => {
+    BucketLists.removeItem(req.params.id)
+      .then(deleted =>
+        res
+          .status(200)
+          .json({ ItemDeleted: deleted, message: "Successful Deletion" })
+      )
+      .catch(error =>
+        res
+          .status(500)
+          .json({ errorMessage: "Problem with the request", error: error })
+      );
+  }
+);
 
 module.exports = router;
