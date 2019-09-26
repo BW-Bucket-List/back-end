@@ -34,7 +34,7 @@ function completedConversion(complete) {
 
 function add(newBucket) {
   return db("bucketLists")
-    .insert(newBucket)
+    .insert(newBucket, "bucket_list_id")
     .then(ids => {
       const [id] = ids;
       return findById(id);
@@ -96,7 +96,7 @@ function findItem(id) {
 
 function addItem(newItem) {
   return db("bucketListsItems")
-    .insert(newItem)
+    .insert(newItem, "item_id")
     .then(ids => {
       const [id] = ids;
       return findItem(id);

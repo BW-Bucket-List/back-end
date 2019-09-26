@@ -2,18 +2,21 @@ exports.seed = function(knex) {
   // Inserts seed entries
   return knex("bucketListsItems").insert([
     {
+      //item_id: 1,
       bucket_list_item_name: "Fly to Spain",
       completed: true,
       bucket_list_item_journal: "https://www.runningofthebulls.com/",
       bucket_list_id: 1
     },
     {
+      //item_id: 2,
       bucket_list_item_name: "Gears 5",
       completed: true,
       bucket_list_item_journal: "https://www.gears5.com/",
       bucket_list_id: 2
     },
     {
+      //tem_id: 3,
       bucket_list_item_name: "Destiny 2 Shadowkeep",
       completed: false,
       bucket_list_item_journal:
@@ -21,6 +24,7 @@ exports.seed = function(knex) {
       bucket_list_id: 2
     },
     {
+      //item_id: 4,
       bucket_list_item_name: "Spider-Man",
       completed: true,
       bucket_list_item_video:
@@ -28,21 +32,25 @@ exports.seed = function(knex) {
       bucket_list_id: 2
     },
     {
+      //item_id: 5,
       bucket_list_item_name: "Last of Us",
       completed: true,
       bucket_list_id: 3
     },
     {
+      //item_id: 6,
       bucket_list_item_name: "We Happy Few",
       completed: true,
       bucket_list_id: 3
     },
     {
+      //item_id: 7,
       bucket_list_item_name: "Diving Suit",
       completed: false,
       bucket_list_id: 4
     },
     {
+      //item_id: 8,
       bucket_list_item_name: "Oxygen Tank",
       completed: false,
       bucket_list_id: 4

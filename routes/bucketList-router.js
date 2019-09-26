@@ -36,7 +36,7 @@ router.get("/", restricted, (req, res) => {
 
 //router.post("/") -> Creates a new bucket list, requires user id, bucketlist name, validates user id first before running
 
-router.post("/", validation.validateNewBucketList, (req, res) => {
+router.post("/", [restricted, validation.validateNewBucketList], (req, res) => {
   BucketLists.add(req.body)
     .then(newBucket => res.status(201).json(newBucket))
     .catch(error =>
@@ -49,7 +49,11 @@ router.post("/", validation.validateNewBucketList, (req, res) => {
 //router.put("/:id") updates bucket list name, require bucketlist id, check
 router.put(
   "/:id",
-  [validationBucket.validateBucketListID, validation.validateUpdateBucketList],
+  [
+    restricted,
+    validationBucket.validateBucketListID,
+    validation.validateUpdateBucketList
+  ],
   (req, res) => {
     BucketLists.update(req.body, req.params.id)
       .then(accepts => {
@@ -70,38 +74,47 @@ router.put(
   }
 );
 //router.delete("/:id") deletes bucketlist, related bucketlistitems are also deleted
-router.delete("/:id", validationBucket.validateBucketListID, (req, res) => {
-  BucketLists.remove(req.params.id)
-    .then(deleted =>
-      res
-        .status(200)
-        .json({ listDeleted: deleted, message: "Successful Deletion" })
-    )
-    .catch(error =>
-      res
-        .status(500)
-        .json({ errorMessage: "Problem with the request", error: error })
-    );
-});
+router.delete(
+  "/:id",
+  [restricted, validationBucket.validateBucketListID],
+  (req, res) => {
+    BucketLists.remove(req.params.id)
+      .then(deleted =>
+        res
+          .status(200)
+          .json({ listDeleted: deleted, message: "Successful Deletion" })
+      )
+      .catch(error =>
+        res
+          .status(500)
+          .json({ errorMessage: "Problem with the request", error: error })
+      );
+  }
+);
 // **** Below are endpoints for adding items to bucketlist ***
 
 //router.post(/items) -> Adds items to a bucketlist requires a item name & existing bucketlistID
 
-router.post("/items", validation.validateNewBucketListItem, (req, res) => {
-  BucketLists.addItem(req.body)
-    .then(addedItem => res.status(201).json(addedItem))
-    .catch(error =>
-      res
-        .status(500)
-        .json({ errorMessage: "Problem with the request", error: error })
-    );
-});
+router.post(
+  "/items",
+  [restricted, validation.validateNewBucketListItem],
+  (req, res) => {
+    BucketLists.addItem(req.body)
+      .then(addedItem => res.status(201).json(addedItem))
+      .catch(error =>
+        res
+          .status(500)
+          .json({ errorMessage: "Problem with the request", error: error })
+      );
+  }
+);
 
 //router.put("/items") updates bucket items, requires bucketlistitem id and updates that item
 
 router.put(
   "/items/:id",
   [
+    restricted,
     validationBucket.validateBucketListItemID,
     validation.validateUpdateBucketListItem
   ],
@@ -129,7 +142,7 @@ router.put(
 
 router.delete(
   "/items/:id",
-  validationBucket.validateBucketListItemID,
+  [restricted, validationBucket.validateBucketListItemID],
   (req, res) => {
     BucketLists.removeItem(req.params.id)
       .then(deleted =>
