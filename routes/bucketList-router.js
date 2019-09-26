@@ -4,11 +4,27 @@ const jwt = require("jsonwebtoken");
 const Users = require("../models/users-model");
 const BucketLists = require("../models/bucketList-model");
 
-const validation = require("../middleware/validation");
+const validationBucket = require("../middleware/validationDatabase");
 const restricted = require("../middleware/restricted-access");
 
-router.get("/:id", (req, res) => {
-  BucketLists.findById(req.params.id)
+router.get(
+  "/:id",
+  [restricted, validationBucket.validateBucketListID],
+  (req, res) => {
+    BucketLists.findById(req.params.id)
+      .then(bucketList => res.status(200).json(bucketList))
+      .catch(error =>
+        res
+          .status(500)
+          .json({ errorMessage: "Problem with the request", error: error })
+      );
+  }
+);
+
+//router.get('/') sends list of bucketlists ONLY the shareable ones and requires auth to access
+
+router.get("/", restricted, (req, res) => {
+  BucketLists.find()
     .then(bucketList => res.status(200).json(bucketList))
     .catch(error =>
       res
@@ -16,8 +32,6 @@ router.get("/:id", (req, res) => {
         .json({ errorMessage: "Problem with the request", error: error })
     );
 });
-
-//router.get('/') sends list of bucketlists ONLY the shareable ones and requires auth to access
 
 //router.post("/") -> Creates a new bucket list, requires user id, bucketlist name, validates user id first before running
 

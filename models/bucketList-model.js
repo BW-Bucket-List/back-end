@@ -3,7 +3,8 @@ const db = require("../database/dbConfig");
 module.exports = {
   add,
   find,
-  findById
+  findById,
+  validateID
 };
 
 function intToBoolean(int) {
@@ -34,8 +35,17 @@ function add(newBucket) {
     });
 }
 
+//returns all bucketlists that non-private
 function find() {
-  return db("bucketLists").select("*");
+  return db("bucketLists")
+    .select("*")
+    .where("private", false);
+}
+
+function validateID(id) {
+  return db("bucketLists")
+    .where("bucket_list_id", id)
+    .first();
 }
 
 function findById(id) {
