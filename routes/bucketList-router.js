@@ -99,6 +99,32 @@ router.post("/items", validation.validateNewBucketListItem, (req, res) => {
 
 //router.put("/items") updates bucket items, requires bucketlistitem id and updates that item
 
+router.put(
+  "/items/:id",
+  [
+    validationBucket.validateBucketListItemID,
+    validation.validateUpdateBucketListItem
+  ],
+  (req, res) => {
+    BucketLists.updateItem(req.body, req.params.id)
+      .then(accepts => {
+        if (accepts === 0) {
+          res.status(400).json({
+            error:
+              "The BucketListItem with that ID doesn't exists so cannot be updated"
+          });
+        } else {
+          res.status(202).json(accepts);
+        }
+      })
+      .catch(error =>
+        res
+          .status(500)
+          .json({ errorMessage: "Problem with the request", error: error })
+      );
+  }
+);
+
 //router.delete("/items/:id") deletes items based on their Item ID
 
 //This route requires more sorting through promises

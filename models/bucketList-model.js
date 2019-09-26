@@ -7,6 +7,7 @@ module.exports = {
   validateID,
   update,
   remove,
+  findItem,
   addItem,
   updateItem,
   removeItem

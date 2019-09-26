@@ -40,4 +40,19 @@ function validateBucketListID(req, res, next) {
     );
 }
 
-function validateBucketListItemID(req, res, next) {}
+function validateBucketListItemID(req, res, next) {
+  BucketLists.findItem(req.params.id)
+    .then(bucket => {
+      if (bucket) {
+        next();
+      } else {
+        res.status(400).json({ message: "Invalid BucketlistItem ID" });
+      }
+    })
+    .catch(error =>
+      res.status(500).json({
+        errorMessage: "Problem with processing in database",
+        error: error
+      })
+    );
+}
