@@ -16,5 +16,24 @@ router.get("/:id", restricted, (req, res) => {
 });
 
 //router.put => user is updated at ID Validate everything except password
-
+router.put("/:id", restricted, (req, res) => {
+  Users.update(req.body, req.params.id)
+    .then(accepts => {
+      if (accepts === 0) {
+        res
+          .status(400)
+          .json({
+            error: "The user with that ID doesn't exists so cannot be updated"
+          });
+      } else {
+        res.status(202).json(accepts);
+      }
+    })
+    .catch(error =>
+      res.status(500).json({
+        errorMessage: "Problem with processing in database",
+        error: error
+      })
+    );
+});
 module.exports = router;
