@@ -11,6 +11,18 @@ module.exports = {
   findUserWithData
 };
 
+function intToBoolean(int) {
+  return int === 1 ? true : false;
+}
+
+function conversion(bucket) {
+  const convert = {
+    ...bucket,
+    private: intToBoolean(bucket.private)
+  };
+  return convert;
+}
+
 function add(user) {
   return db("users")
     .insert(user)
@@ -41,7 +53,8 @@ function findUserBucketListByIdAndType(id, bool) {
       "bucket_list_user_id",
       "private"
     )
-    .join("bucketLists", "users.user_id", "bucketLists.bucket_list_user_id");
+    .join("bucketLists", "users.user_id", "bucketLists.bucket_list_user_id")
+    .map(e => conversion(e));
 }
 
 function findBy(filter) {
@@ -74,6 +87,18 @@ function findUserWithData(id) {
     return user;
   });
 }
+
+/*    .then(user => {
+      const sharedItemsQuery = user.sharedBucketLists.map(e =>
+        BucketList.findById(e.bucket_list_id).then(list => {
+          return lists; //This is a promise of items being sent
+        })
+      );
+      return Promise.all([sharedItemsQuery]).then(([sharedItems]) => {
+        user.sharedBucketLists.items = sharedItems;
+        return user;
+      });
+    });*/
 
 // return db("users")
 // .where("user_id", id)
