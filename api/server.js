@@ -11,7 +11,11 @@ server.use(express.json());
 server.use(cors());
 
 server.get("/", (req, res) => {
-  res.status(200).send("<h1>Welcome to Bucketlist Backend Server</h1>");
+  res
+    .status(200)
+    .send(
+      "<h1>Welcome to Bucketlist Backend Server</h1><a href='https://documenter.getpostman.com/view/8666055/SVn3ra65?version=latest'>Link to the API docs</a>"
+    );
 });
 
 server.use("/auth", authRoute);
