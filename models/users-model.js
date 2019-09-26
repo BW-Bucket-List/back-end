@@ -69,7 +69,7 @@ function remove(id) {
 
 function update(data, id) {
   return db("users")
-    .where({ id })
+    .where("user_id", id)
     .update(data);
 }
 

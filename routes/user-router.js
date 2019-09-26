@@ -15,4 +15,6 @@ router.get("/:id", restricted, (req, res) => {
     );
 });
 
+//router.put => user is updated at ID Validate everything except password
+
 module.exports = router;
