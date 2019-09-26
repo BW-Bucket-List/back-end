@@ -35,15 +35,17 @@ router.get("/", restricted, (req, res) => {
 
 //router.post("/") -> Creates a new bucket list, requires user id, bucketlist name, validates user id first before running
 
-//router.post(/items) -> Adds items to a bucketlist requires a item name & existing bucketlistID
+//router.put("/:id") updates bucket list name, require bucketlist id, check
 
-//router.put("/") updates bucket list name, require bucketlist id, check
+//router.delete("/:id") deletes bucketlist, related bucketlistitems are also deleted
+
+// **** Below are endpoints for adding items to bucketlist ***
+
+//router.post(/items) -> Adds items to a bucketlist requires a item name & existing bucketlistID
 
 //router.put("/items") updates bucket items, requires bucketlistitem id and updates that item
 
 //router.delete("/items/:id") deletes items based on their Item ID
-
-//router.delete("/:id") deletes bucketlist, related bucketlistitems are also deleted
 
 //This route requires more sorting through promises
 // router.get("/user/:id", (req, res) => {
