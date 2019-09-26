@@ -96,7 +96,7 @@ function findItem(id) {
 
 function addItem(newItem) {
   return db("bucketListsItems")
-    .insert(newItem)
+    .insert(newItem, "item_id")
     .then(ids => {
       const [id] = ids;
       return findItem(id);

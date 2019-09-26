@@ -24,7 +24,7 @@ function conversion(bucket) {
 
 function add(user) {
   return db("users")
-    .insert(user)
+    .insert(user, "user_id")
     .then(ids => {
       const [id] = ids;
       return findById(id);
