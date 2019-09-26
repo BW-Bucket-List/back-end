@@ -1,5 +1,4 @@
 const db = require("../database/dbConfig");
-const BucketList = require("./bucketList-model");
 
 module.exports = {
   add,
@@ -63,14 +62,21 @@ function findBy(filter) {
 
 function remove(id) {
   return db("users")
-    .where({ id })
+    .where(id)
     .del();
 }
 
 function update(data, id) {
   return db("users")
     .where("user_id", id)
-    .update(data);
+    .update(data)
+    .then(accepted => {
+      if (accepted === 1) {
+        return findById(id);
+      } else {
+        return accepted;
+      }
+    });
 }
 
 function findUserWithData(id) {

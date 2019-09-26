@@ -3,7 +3,14 @@ const db = require("../database/dbConfig");
 module.exports = {
   add,
   find,
-  findById
+  findById,
+  validateID,
+  update,
+  remove,
+  findItem,
+  addItem,
+  updateItem,
+  removeItem
 };
 
 function intToBoolean(int) {
@@ -34,8 +41,17 @@ function add(newBucket) {
     });
 }
 
+//returns all bucketlists that non-private
 function find() {
-  return db("bucketLists").select("*");
+  return db("bucketLists")
+    .select("*")
+    .where("private", false);
+}
+
+function validateID(id) {
+  return db("bucketLists")
+    .where("bucket_list_id", id)
+    .first();
 }
 
 function findById(id) {
@@ -52,6 +68,58 @@ function findById(id) {
         });
     });
 }
+
+function update(data, id) {
+  return db("bucketLists")
+    .where("bucket_list_id", id)
+    .update(data)
+    .then(accepted => {
+      if (accepted === 1) {
+        return findById(id);
+      } else {
+        return accepted;
+      }
+    });
+}
+
+function remove(id) {
+  return db("bucketLists")
+    .where("bucket_list_id", id)
+    .del();
+}
+
+function findItem(id) {
+  return db("bucketListsItems")
+    .where("item_id", id)
+    .first();
+}
+
+function addItem(newItem) {
+  return db("bucketListsItems")
+    .insert(newItem)
+    .then(ids => {
+      const [id] = ids;
+      return findItem(id);
+    });
+}
+function updateItem(data, id) {
+  return db("bucketListsItems")
+    .where("item_id", id)
+    .update(data)
+    .then(accepted => {
+      if (accepted === 1) {
+        return findItem(id);
+      } else {
+        return accepted;
+      }
+    });
+}
+function removeItem(id) {
+  return db("bucketListsItems")
+    .where("item_id", id)
+    .del();
+}
+
 // function findByUserId(id) {
 //   return db("bucketLists").where("bucket_list_user_id", id);
 //   // .then(bucketList => {
@@ -64,4 +132,3 @@ function findById(id) {
 //   //     });
 //   // });
 // }
-function sortByBucketLists(id) {}
